@@ -1,25 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Buttons } from './components/Buttons'
+import { useState } from 'react'
+import GlobalStyles from './styles/global'
+import { ThemeProvider } from 'styled-components'
+import light from './styles/themes/light'
+import dark from './styles/themes/dark'
 
 function App() {
+
+  const [counter, setCounter] = useState(0)
+  const [theme, setTheme] = useState(light)
+
+  const toggleTheme = () => {
+    setTheme(theme.title === 'light' ? dark : light)
+  }
+  
+  const handleUpNumbers = () => {
+    if(counter >= 20) {
+      alert('O número máximo de pessoas dentro do supermercado é de 20 pessoas.')
+    }
+    return setCounter(counter + 1)
+  }
+
+  const handleDownNumbers = () => {
+    if(counter < 0) {
+      alert('Supermercado vazio')
+    }
+    return setCounter(counter - 1)
+  }
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <Buttons 
+          plus='+' 
+          less='-' 
+          handleOnClickUp={handleUpNumbers} 
+          handleOnClickDown={handleDownNumbers} 
+          counterState={counter} 
+          toggleThemeProps={toggleTheme}
+        />
+      </ThemeProvider>
+    </>
   );
 }
 
